@@ -1,0 +1,4 @@
+# Ignore exploratory/temporary benchmark outputs.
+# Only versioned results (e.g., results-*-v0.1.json) should be committed.
+latest_results.json
+*-raw-*.json
