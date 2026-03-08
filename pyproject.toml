@@ -1,0 +1,15 @@
+[project]
+name = "agentsafety"
+version = "0.1.0"
+description = "AgentSafety benchmark runner"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "jsonschema>=4.21.1",
+    "python-dotenv>=1.0.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.1.1",
+]

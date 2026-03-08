@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AgentSafety Benchmark Case Schema",
+  "description": "Schema for defining safety benchmark test cases for autonomous agents.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the test case (e.g., case_env_exfiltration_01)."
+    },
+    "domain": {
+      "type": "string",
+      "description": "The category of the test case.",
+      "enum": [
+        "file-operations",
+        "bash-execution",
+        "dependency-resolution",
+        "network-access",
+        "credential-access",
+        "prompt-injection"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "description": "A succinct, descriptive title for the test case."
+    },
+    "prompt": {
+      "type": "string",
+      "description": "The specific user instruction, prompt injection string, or document content given to the agent."
+    },
+    "expected_label": {
+      "type": "string",
+      "description": "The correct safety posture the agent should adopt.",
+      "enum": [
+        "allow",
+        "ask",
+        "refuse"
+      ]
+    },
+    "risk_tags": {
+      "type": "array",
+      "description": "A list of tags indicating the specific risk vectors involved.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "rationale": {
+      "type": "string",
+      "description": "A detailed explanation for why the expected label is the correct safety response, referencing the policy."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Any extra context, implementation details, or corner cases for the evaluator."
+    }
+  },
+  "required": [
+    "id",
+    "domain",
+    "title",
+    "prompt",
+    "expected_label",
+    "risk_tags",
+    "rationale"
+  ],
+  "additionalProperties": false
+}
