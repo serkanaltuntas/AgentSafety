@@ -6,6 +6,18 @@ Created and maintained by [Serkan Altuntas](https://github.com/serkanaltuntas), 
 
 Rather than chasing generalized "safe superintelligence," AgentSafety provides a concrete, operational decision framework, public refusal/approval baselines, and reproducible failure reports.
 
+## 📊 Latest Findings Snapshot
+
+- Meta comparison report (committed): [`reports/meta-report.md`](reports/meta-report.md)
+- Refresh via script only:
+  ```bash
+  PYTHONPATH=. uv run python runner/meta_report.py
+  ```
+- Verify it is up-to-date before commit:
+  ```bash
+  PYTHONPATH=. uv run python runner/meta_report.py --check
+  ```
+
 ---
 
 ## 🚀 The Core Idea
@@ -44,7 +56,8 @@ agentsafety/
 ├─ datasets/
 │  └─ code-agent-v0.1.jsonl # Active benchmark dataset
 ├─ runner/
-│  └─ main.py               # Minimal evaluation script
+│  ├─ main.py               # Benchmark execution script
+│  └─ meta_report.py        # Aggregates saved result JSONs into a meta markdown report
 └─ reports/                 # Templates and outputs from evaluation runs
    └─ report-v0.1-template.md 
 ```
@@ -103,6 +116,25 @@ uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model go
 uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model ollama:llama3.1
 ```
 _Note: Ensure the corresponding API key (e.g., `OPENAI_API_KEY`, `GEMINI_API_KEY`) is present in your `.env` file before running cloud models._
+
+### 5. Generating the Meta Comparison Report
+After one or more benchmark runs, generate (or refresh) the committed markdown meta report:
+
+```bash
+PYTHONPATH=. uv run python runner/meta_report.py
+```
+
+Optional: compare all historical runs instead of latest-per-model only:
+
+```bash
+PYTHONPATH=. uv run python runner/meta_report.py --all-runs
+```
+
+Optional: enforce freshness in CI/pre-commit (fails if `reports/meta-report.md` is stale):
+
+```bash
+PYTHONPATH=. uv run python runner/meta_report.py --check
+```
 
 ## 🤝 Contributing
 
