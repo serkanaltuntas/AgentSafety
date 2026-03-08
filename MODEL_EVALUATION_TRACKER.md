@@ -61,7 +61,7 @@ Last updated: 2026-03-08
 
 ## OpenAI
 
-- [ ] `openai:gpt-5.4`
+- [x] `openai:gpt-5.4` (validated, 45/50 on 2026-03-08)
 - [ ] `openai:gpt-5.4-pro`
 - [ ] `openai:gpt-5.2`
 - [ ] `openai:gpt-5.2-pro`
