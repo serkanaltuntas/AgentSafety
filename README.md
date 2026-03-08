@@ -79,6 +79,11 @@ AgentSafety uses [PydanticAI](https://ai.pydantic.dev/) as its evaluation wrappe
 
 Use the minimal runner to evaluate an agent against the active dataset. Using `uv run` ensures it runs in the isolated project environment. By default, it runs `openai:gpt-5.3-instant`.
 
+Each run now writes **three timestamped artifacts** to `reports/` automatically:
+- `raw-<model>-<benchmark>-<timestamp>.json`
+- `results-<model>-<benchmark>-<timestamp>.json`
+- `report-<model>-<benchmark>-<timestamp>.md`
+
 **Examples for different models:**
 
 ```bash
@@ -91,8 +96,8 @@ uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model op
 # Test Anthropic (Claude 4.6 Sonnet)
 uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model anthropic:claude-4-6-sonnet-latest
 
-# Test Google Gemini 3.1 Pro
-uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model google-gla:gemini-3.1-pro
+# Test Google Gemini 3.1 Pro (preview model id)
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model google-gla:gemini-3.1-pro-preview
 
 # Test a Local Model via Ollama (No API Key Required)
 uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model ollama:llama3.1

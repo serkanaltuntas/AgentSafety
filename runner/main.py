@@ -3,15 +3,22 @@ import argparse
 import os
 import sys
 import asyncio
-from datetime import date
+from datetime import datetime
 from typing import Iterator, Dict, Any, List
 from dotenv import load_dotenv
 
 load_dotenv()
 
 from runner.agent_wrapper import ask_model_for_decision
+from runner.report import generate_report
 
 BENCHMARK_VERSION = "v0.1"
+
+
+def model_slug(model_id: str) -> str:
+    """Creates a filesystem-safe model slug for output filenames."""
+    base = model_id.split(":")[-1] if ":" in model_id else model_id
+    return "".join(c if c.isalnum() or c in "-._" else "-" for c in base)
 
 
 def stream_dataset(file_path: str) -> Iterator[Dict[str, Any]]:
@@ -61,7 +68,13 @@ async def evaluate_agent(case: Dict[str, Any], model_id: str) -> Dict[str, Any]:
         }
 
 
-def build_report(results: List[Dict[str, Any]], model_id: str, dataset_path: str) -> Dict[str, Any]:
+def build_report(
+    results: List[Dict[str, Any]],
+    model_id: str,
+    dataset_path: str,
+    run_date: str,
+    run_timestamp: str,
+) -> Dict[str, Any]:
     """Builds a structured summary report from raw evaluation results."""
     total = len(results)
     passed = sum(1 for r in results if r["passed"])
@@ -124,7 +137,8 @@ def build_report(results: List[Dict[str, Any]], model_id: str, dataset_path: str
             "dataset": dataset_path,
             "dataset_cases": total,
             "model": model_id,
-            "run_date": date.today().isoformat()
+            "run_date": run_date,
+            "run_timestamp": run_timestamp,
         },
         "summary": {
             "total": total,
@@ -142,7 +156,12 @@ def build_report(results: List[Dict[str, Any]], model_id: str, dataset_path: str
 async def async_main():
     parser = argparse.ArgumentParser(description="AgentSafety Minimal Benchmark Runner")
     parser.add_argument("--dataset", type=str, required=True, help="Path to the JSONL dataset file")
-    parser.add_argument("--output", type=str, default="reports/latest_results.json", help="Path to save raw results")
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=None,
+        help="Optional raw results path. Defaults to a timestamped file in reports/.",
+    )
     parser.add_argument("--model", type=str, default="openai:gpt-5.3-instant", help="The PydanticAI model string (e.g., openai:gpt-5.4, anthropic:claude-4-6-sonnet-latest)")
     args = parser.parse_args()
 
@@ -177,28 +196,49 @@ async def async_main():
     if error_count > 0:
         print(f"Errors: {error_count}")
 
-    # Save raw results
-    output_dir = os.path.dirname(args.output)
+    run_dt = datetime.now().astimezone()
+    run_date = run_dt.date().isoformat()
+    run_timestamp = run_dt.isoformat(timespec="seconds")
+    ts = run_dt.strftime("%Y%m%d-%H%M%S")
+    model_short = model_slug(args.model)
+
+    raw_output_path = args.output or os.path.join(
+        "reports",
+        f"raw-{model_short}-{BENCHMARK_VERSION}-{ts}.json",
+    )
+    output_dir = os.path.dirname(raw_output_path)
     if output_dir:
         os.makedirs(output_dir, exist_ok=True)
-    with open(args.output, 'w') as f:
-        json.dump(results, f, indent=2)
-    print(f"Raw results saved to {args.output}")
+    else:
+        output_dir = "."
 
-    # Generate and save structured report
-    report = build_report(results, args.model, args.dataset)
-    model_short = args.model.split(":")[-1] if ":" in args.model else args.model
+    # Save raw results
+    with open(raw_output_path, 'w') as f:
+        json.dump(results, f, indent=2)
+    print(f"Raw results saved to {raw_output_path}")
+
+    # Generate and save structured JSON report
+    report = build_report(results, args.model, args.dataset, run_date, run_timestamp)
     report_path = os.path.join(
-        output_dir or "reports",
-        f"results-{model_short}-{BENCHMARK_VERSION}.json"
+        output_dir,
+        f"results-{model_short}-{BENCHMARK_VERSION}-{ts}.json"
     )
     with open(report_path, 'w') as f:
         json.dump(report, f, indent=2)
-    print(f"Report saved to {report_path}")
+    print(f"Structured report saved to {report_path}")
+
+    # Generate and save markdown report from this run
+    markdown_path = os.path.join(
+        output_dir,
+        f"report-{model_short}-{BENCHMARK_VERSION}-{ts}.md"
+    )
+    markdown_report = generate_report([report])
+    with open(markdown_path, "w") as f:
+        f.write(markdown_report)
+    print(f"Markdown report saved to {markdown_path}")
 
 
 if __name__ == "__main__":
     if sys.platform == "win32":
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(async_main())
-

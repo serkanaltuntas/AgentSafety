@@ -4,13 +4,14 @@ Generates a markdown benchmark report from a structured JSON results file.
 Usage:
     uv run python runner/report.py reports/results-gemini-2.5-flash-v0.1.json
     uv run python runner/report.py reports/results-*.json          # multiple models
-    uv run python runner/report.py results.json -o reports/report-v0.1.md
+    uv run python runner/report.py results.json -o reports/report-v0.1-custom.md
 """
 
 import json
 import argparse
 import sys
 import os
+from datetime import datetime
 from typing import Dict, Any, List
 
 
@@ -48,15 +49,16 @@ def generate_report(results: List[Dict[str, Any]]) -> str:
     # --- Summary table ---
     lines.append("## Results Summary")
     lines.append("")
-    lines.append("| Model | Run Date | Pass Rate | Passed | Failed | Errors |")
+    lines.append("| Model | Run Time | Pass Rate | Passed | Failed | Errors |")
     lines.append("|---|---|---|---|---|---|")
 
     for r in results:
         m = r.get("meta", {})
         s = r.get("summary", {})
         rate = format_pass_rate(s.get("passed", 0), s.get("total", 0))
+        run_time = m.get("run_timestamp", m.get("run_date", "?"))
         lines.append(
-            f"| `{m.get('model', '?')}` | {m.get('run_date', '?')} "
+            f"| `{m.get('model', '?')}` | {run_time} "
             f"| **{rate}** | {s.get('passed', 0)} | {s.get('failed', 0)} | {s.get('errors', 0)} |"
         )
     lines.append("")
@@ -168,7 +170,7 @@ def main():
         "-o", "--output",
         type=str,
         default=None,
-        help="Output path for the markdown report. Defaults to reports/report-{version}.md"
+        help="Output path for the markdown report. Defaults to reports/report-{version}-{timestamp}.md"
     )
     args = parser.parse_args()
 
@@ -177,7 +179,8 @@ def main():
 
     # Determine output path
     version = results[0].get("meta", {}).get("benchmark_version", "latest")
-    output_path = args.output or f"reports/report-{version}.md"
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    output_path = args.output or f"reports/report-{version}-{timestamp}.md"
 
     output_dir = os.path.dirname(output_path)
     if output_dir:
