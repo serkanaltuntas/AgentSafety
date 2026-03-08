@@ -1,14 +1,15 @@
 # AgentSafety
 
-**AgentSafety** is an open benchmark project for evaluating whether autonomous code agents make safe decisions: `allow`, `ask`, or `refuse`. 
+**AgentSafety** is an open benchmark for evaluating whether autonomous code agents make safe decisions: `allow`, `ask`, or `refuse`.
 
-Created and maintained by [Serkan Altuntas](https://github.com/serkanaltuntas), this project focuses on a practical problem in AI: measuring the safety posture of code-execution agents. 
+Created and maintained by [Serkan Altuntas](https://github.com/serkanaltuntas), this project focuses on a practical problem in AI: measuring the safety posture of code-execution agents.
 
 Rather than chasing generalized "safe superintelligence," AgentSafety provides a concrete, operational decision framework, public refusal/approval baselines, and reproducible failure reports.
 
 ## 📊 Latest Findings Snapshot
 
 - Meta comparison report (committed): [`reports/meta-report.md`](reports/meta-report.md)
+- Model inventory/tracker: [`MODEL_EVALUATION_TRACKER.md`](MODEL_EVALUATION_TRACKER.md)
 - Refresh via script only:
   ```bash
   PYTHONPATH=. uv run python runner/meta_report.py
@@ -22,7 +23,7 @@ Rather than chasing generalized "safe superintelligence," AgentSafety provides a
 
 ## 🚀 The Core Idea
 
-A capable AI agent is not useful unless it can make safe decisions. 
+A capable AI agent is not useful unless it can make safe decisions.
 
 Instead of scoring an agent solely on "did it complete the task?", AgentSafety scores it on whether it chose the correct safety posture. The benchmark uses three straightforward labels:
 - **`allow`**: The action is safe to proceed automatically within defined boundaries.
@@ -50,6 +51,7 @@ agentsafety/
 ├─ README.md                # Project Overview & Setup
 ├─ policy.md                # Safety Boundaries & Decision Model
 ├─ CONTRIBUTING.md          # Project Philosophy & Contribution Guide
+├─ MODEL_EVALUATION_TRACKER.md # Vendor/model coverage checklist
 ├─ LICENSE                  # Apache 2.0 License
 ├─ schemas/
 │  └─ case.schema.json      # JSON Schema for benchmark cases
@@ -58,8 +60,9 @@ agentsafety/
 ├─ runner/
 │  ├─ main.py               # Benchmark execution script
 │  └─ meta_report.py        # Aggregates saved result JSONs into a meta markdown report
-└─ reports/                 # Templates and outputs from evaluation runs
-   └─ report-v0.1-template.md 
+└─ reports/                 # Templates and generated evaluation outputs
+   ├─ meta-report.md        # Committed cross-run comparison report
+   └─ report-v0.1-template.md
 ```
 
 ## 🛠️ Setup & Execution
@@ -107,7 +110,7 @@ uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl
 uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model openai:gpt-5.4
 
 # Test Anthropic (Claude 4.6 Sonnet)
-uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model anthropic:claude-4-6-sonnet-latest
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model anthropic:claude-sonnet-4-6
 
 # Test Google Gemini 3.1 Pro (preview model id)
 uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model google-gla:gemini-3.1-pro-preview
@@ -138,7 +141,7 @@ PYTHONPATH=. uv run python runner/meta_report.py --check
 
 ## 🤝 Contributing
 
-We are looking for high-quality, realistic risk scenarios for code-execution agents. 
+We are looking for high-quality, realistic risk scenarios for code-execution agents.
 
 We choose **better cases over more cases**. Please refer to the [Contributing Validation Guidelines](CONTRIBUTING.md) to understand how you can submit new benchmark challenges.
 
