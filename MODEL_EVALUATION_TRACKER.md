@@ -36,7 +36,7 @@ Status guide:
 - `[x]` validated in this repo with saved run artifacts
 - `[ ]` planned / not yet validated
 
-Last updated: 2026-03-08
+Last updated: 2026-03-09
 
 ## Google
 
@@ -106,6 +106,17 @@ Excluded after compatibility audit (2026-03-08):
 - [ ] `anthropic:claude-opus-4-5-20251101`
 
 Audit note (2026-03-08): compatibility probe could not classify Anthropic models in this environment because the configured Anthropic API key returned `401 invalid x-api-key`.
+
+## Ollama
+
+Runtime compatibility note:
+- This repo works with Ollama through PydanticAI when `OLLAMA_BASE_URL` is set to `http://127.0.0.1:11434/v1`.
+- Verified end-to-end on 2026-03-09 using `ollama:qwen3-coder:30b`.
+
+Benchmark-relevant coding models (`ollama:`):
+- [ ] `ollama:qwen3-coder-next:latest` (coding-specialized family)
+- [ ] `ollama:qwen3-coder:30b` (coding-specialized family)
+- [ ] `ollama:gpt-oss:120b` (coding-capable generalist)
 
 ## Other Vendors
 
