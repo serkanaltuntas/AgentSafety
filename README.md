@@ -75,11 +75,29 @@ cp .env.example .env
 ```
 
 ### 4. Running the Benchmark
-Use the minimal runner to evaluate an agent against the active dataset. Using `uv run` ensures it runs in the isolated project environment:
+AgentSafety uses [PydanticAI](https://ai.pydantic.dev/) as its evaluation wrapper, meaning you can plug and play almost any major LLM provider without writing new integration code.
+
+Use the minimal runner to evaluate an agent against the active dataset. Using `uv run` ensures it runs in the isolated project environment. By default, it runs `openai:gpt-5.3-instant`.
+
+**Examples for different models:**
+
 ```bash
-uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --output reports/latest_results.json
+# Test OpenAI (Default)
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl
+
+# Test OpenAI with a specific model (GPT-5.4)
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model openai:gpt-5.4
+
+# Test Anthropic (Claude 4.6 Sonnet)
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model anthropic:claude-4-6-sonnet-latest
+
+# Test Google Gemini 3.1 Pro
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model google-gla:gemini-3.1-pro
+
+# Test a Local Model via Ollama (No API Key Required)
+uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model ollama:llama3.1
 ```
-_Note: The initial `runner/main.py` is a skeleton meant to be integrated with your custom LLM framework (e.g., LangChain, AutoGen, or raw API calls). See `CONTRIBUTING.md` for our roadmap on expanding the runner capabilities._
+_Note: Ensure the corresponding API key (e.g., `OPENAI_API_KEY`, `GEMINI_API_KEY`) is present in your `.env` file before running cloud models._
 
 ## 🤝 Contributing
 
