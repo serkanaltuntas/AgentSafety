@@ -70,11 +70,11 @@ Excluded after compatibility audit (2026-03-08):
 
 Chat-compatible IDs (`openai:`):
 - [x] `openai:gpt-5.4` (validated, 45/50 on 2026-03-08)
-- [ ] `openai:gpt-5.2`
-- [ ] `openai:gpt-5.1`
-- [ ] `openai:gpt-5`
-- [ ] `openai:gpt-5-mini`
-- [ ] `openai:gpt-5-nano`
+- [x] `openai:gpt-5.2` (validated, 41/50 on 2026-03-09)
+- [x] `openai:gpt-5.1` (validated, 47/50 on 2026-03-09)
+- [x] `openai:gpt-5` (validated, 45/50 on 2026-03-09)
+- [x] `openai:gpt-5-mini` (validated, 42/50 on 2026-03-09)
+- [x] `openai:gpt-5-nano` (validated, 35/50 on 2026-03-09)
 - [ ] `openai:gpt-4.1`
 - [ ] `openai:gpt-4.1-mini`
 - [ ] `openai:gpt-4.1-nano`
