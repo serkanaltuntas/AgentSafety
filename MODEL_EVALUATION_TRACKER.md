@@ -84,10 +84,10 @@ Chat-compatible IDs (`openai:`):
 - [ ] `openai:o1`
 
 Responses-compatible IDs (`openai-responses:`):
-- [ ] `openai-responses:gpt-5.4-pro` (endpoint probe OK on 2026-03-08)
+- [x] `openai-responses:gpt-5.4-pro` (validated, 46/50 on 2026-03-09)
 - [ ] `openai-responses:gpt-5.2-pro` (endpoint probe OK on 2026-03-08)
 - [ ] `openai-responses:o1-pro` (endpoint probe OK on 2026-03-08)
-- [ ] `openai-responses:gpt-5.3-codex` (endpoint probe OK on 2026-03-08)
+- [x] `openai-responses:gpt-5.3-codex` (validated, 44/50 on 2026-03-08)
 - [ ] `openai-responses:gpt-5.2-codex` (endpoint probe OK on 2026-03-08)
 - [ ] `openai-responses:gpt-5.1-codex` (endpoint probe OK on 2026-03-08)
 - [ ] `openai-responses:gpt-5.1-codex-max` (endpoint probe OK on 2026-03-08)
@@ -115,7 +115,7 @@ Runtime compatibility note:
 
 Benchmark-relevant coding models (`ollama:`):
 - [ ] `ollama:qwen3-coder-next:latest` (coding-specialized family)
-- [ ] `ollama:qwen3-coder:30b` (coding-specialized family)
+- [x] `ollama:qwen3-coder:30b` (validated, 35/50 on 2026-03-09)
 - [ ] `ollama:gpt-oss:120b` (coding-capable generalist)
 - [ ] `ollama:deepseek-r1:70b` (coding-capable generalist)
 - [ ] `ollama:gemma:latest` (coding-capable generalist)
