@@ -21,6 +21,66 @@ def model_slug(model_id: str) -> str:
     return "".join(c if c.isalnum() or c in "-._" else "-" for c in base)
 
 
+def is_ollama_model(model_id: str) -> bool:
+    """Returns True if the model uses the Ollama provider."""
+    return model_id.startswith("ollama:")
+
+
+def classify_ollama_error(error_text: str) -> str:
+    """
+    Classifies Ollama errors.
+
+    runtime_unavailable:
+        Local runtime/configuration failure that should stop the benchmark immediately.
+    evaluation_error:
+        Model-level response quality/validation error for a single case.
+    """
+    text = error_text.lower()
+    runtime_markers = (
+        "404 page not found",
+        "connection refused",
+        "cannot connect",
+        "operation not permitted",
+        "context deadline exceeded",
+        "timed out",
+        "timeout",
+        "broken pipe",
+        "connection reset",
+        "unexpected eof",
+        "insufficient memory",
+        "not enough memory",
+        "status_code: 500",
+        "status_code: 502",
+        "status_code: 503",
+        "status_code: 504",
+    )
+    if any(marker in text for marker in runtime_markers):
+        return "runtime_unavailable"
+    return "evaluation_error"
+
+
+async def preflight_ollama(model_id: str) -> None:
+    """Performs a one-shot check to ensure Ollama is reachable before the benchmark starts."""
+    base_url = (os.getenv("OLLAMA_BASE_URL") or "").strip()
+    if not base_url:
+        raise RuntimeError(
+            "OLLAMA_BASE_URL is not set. "
+            "Set it to your Ollama OpenAI-compatible endpoint, e.g. http://127.0.0.1:11434/v1."
+        )
+
+    prompt = (
+        "Connectivity preflight: This is a safe request to classify. "
+        "Return the correct safety label."
+    )
+    try:
+        await ask_model_for_decision(model_id, prompt)
+    except Exception as e:
+        raise RuntimeError(
+            f"Ollama preflight failed for model '{model_id}' with OLLAMA_BASE_URL='{base_url}'. "
+            f"Underlying error: {e}"
+        ) from e
+
+
 def stream_dataset(file_path: str) -> Iterator[Dict[str, Any]]:
     """Yields parsed JSON cases from a JSONL file one by one to save memory."""
     print(f"Loading dataset from {file_path}...")
@@ -52,10 +112,15 @@ async def evaluate_agent(case: Dict[str, Any], model_id: str) -> Dict[str, Any]:
             "actual": decision.label,
             "reasoning": decision.reasoning,
             "passed": passed,
-            "error": None
+            "error": None,
+            "error_kind": None,
         }
     except Exception as e:
-        print(f"  [Error] Evaluation failed for case {case.get('id')}: {e}", file=sys.stderr)
+        error_text = str(e)
+        print(f"  [Error] Evaluation failed for case {case.get('id')}: {error_text}", file=sys.stderr)
+        error_kind = "evaluation_error"
+        if is_ollama_model(model_id):
+            error_kind = classify_ollama_error(error_text)
         return {
             "case_id": case.get("id"),
             "domain": case.get("domain"),
@@ -64,7 +129,8 @@ async def evaluate_agent(case: Dict[str, Any], model_id: str) -> Dict[str, Any]:
             "actual": None,
             "reasoning": None,
             "passed": False,
-            "error": str(e)
+            "error": error_text,
+            "error_kind": error_kind,
         }
 
 
@@ -174,6 +240,19 @@ async def async_main():
     total_count = 0
     error_count = 0
 
+    if is_ollama_model(args.model):
+        print("\nRunning Ollama preflight...")
+        try:
+            await preflight_ollama(args.model)
+        except RuntimeError as e:
+            print(f"Error: {e}", file=sys.stderr)
+            print(
+                "Guard triggered: benchmark aborted and no report files were generated.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
+        print("Ollama preflight passed.")
+
     print("\nStarting evaluation...")
     for case in stream_dataset(args.dataset):
         total_count += 1
@@ -181,6 +260,17 @@ async def async_main():
         results.append(result)
 
         if result.get("error"):
+            if is_ollama_model(args.model) and result.get("error_kind") == "runtime_unavailable":
+                print(
+                    f"Error: Ollama runtime failed during case {result.get('case_id')}: "
+                    f"{result.get('error')}",
+                    file=sys.stderr,
+                )
+                print(
+                    "Guard triggered: benchmark aborted and no report files were generated.",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
             error_count += 1
             print(f"  Result: ERROR")
         elif result.get("passed"):
