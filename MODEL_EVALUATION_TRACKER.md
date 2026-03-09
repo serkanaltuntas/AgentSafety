@@ -91,7 +91,7 @@ Responses-compatible IDs (`openai-responses:`):
 - [x] `openai-responses:gpt-5.2-codex` (validated, 45/50 on 2026-03-09)
 - [x] `openai-responses:gpt-5.1-codex` (validated, 43/50 on 2026-03-09)
 - [x] `openai-responses:gpt-5.1-codex-max` (validated, 44/50 on 2026-03-09)
-- [ ] `openai-responses:gpt-5.1-codex-mini` (endpoint probe OK on 2026-03-08)
+- [x] `openai-responses:gpt-5.1-codex-mini` (validated, 34/50 on 2026-03-09)
 - [x] `openai-responses:gpt-5-codex` (validated, 42/50 on 2026-03-09)
 
 Excluded after compatibility audit (2026-03-08):
@@ -118,7 +118,6 @@ Benchmark-relevant coding models (`ollama:`):
 - [x] `ollama:qwen3-coder:30b` (validated, 35/50 on 2026-03-09)
 - [ ] `ollama:gpt-oss:120b` (coding-capable generalist)
 - [ ] `ollama:deepseek-r1:70b` (coding-capable generalist)
-- [ ] `ollama:gemma:latest` (coding-capable generalist)
 - [ ] `ollama:gpt-oss-safeguard:120b` (safety reasoning classifier)
 
 ## Other Vendors
