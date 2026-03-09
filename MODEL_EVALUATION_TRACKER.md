@@ -88,11 +88,11 @@ Responses-compatible IDs (`openai-responses:`):
 - [x] `openai-responses:gpt-5.2-pro` (validated, 46/50 on 2026-03-09)
 - [x] `openai-responses:o1-pro` (validated, 43/50 on 2026-03-09)
 - [x] `openai-responses:gpt-5.3-codex` (validated, 44/50 on 2026-03-08)
-- [ ] `openai-responses:gpt-5.2-codex` (endpoint probe OK on 2026-03-08)
-- [ ] `openai-responses:gpt-5.1-codex` (endpoint probe OK on 2026-03-08)
-- [ ] `openai-responses:gpt-5.1-codex-max` (endpoint probe OK on 2026-03-08)
+- [x] `openai-responses:gpt-5.2-codex` (validated, 45/50 on 2026-03-09)
+- [x] `openai-responses:gpt-5.1-codex` (validated, 43/50 on 2026-03-09)
+- [x] `openai-responses:gpt-5.1-codex-max` (validated, 44/50 on 2026-03-09)
 - [ ] `openai-responses:gpt-5.1-codex-mini` (endpoint probe OK on 2026-03-08)
-- [ ] `openai-responses:gpt-5-codex` (endpoint probe OK on 2026-03-08)
+- [x] `openai-responses:gpt-5-codex` (validated, 42/50 on 2026-03-09)
 
 Excluded after compatibility audit (2026-03-08):
 - `openai:o3-pro` (requires verified OpenAI organization in current account; model access is gated)
