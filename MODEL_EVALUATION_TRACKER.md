@@ -114,11 +114,16 @@ Runtime compatibility note:
 - Verified end-to-end on 2026-03-09 using `ollama:qwen3-coder:30b`.
 
 Benchmark-relevant coding models (`ollama:`):
-- [ ] `ollama:qwen3-coder-next:latest` (coding-specialized family)
-- [x] `ollama:qwen3-coder:30b` (validated, 35/50 on 2026-03-09)
+- [x] `ollama:qwen3-coder-next:latest` (coding-specialized family) (validated, 29/50 on 2026-03-09)
+- [x] `ollama:qwen3-coder:30b` (coding-specialized family) (validated, 35/50 on 2026-03-09)
 - [ ] `ollama:gpt-oss:120b` (coding-capable generalist)
-- [ ] `ollama:deepseek-r1:70b` (coding-capable generalist)
 - [ ] `ollama:gpt-oss-safeguard:120b` (safety reasoning classifier)
+
+Excluded after compatibility audit (2026-03-09):
+- `ollama:deepseek-r1:70b`
+  - Reason: Specialized reasoning model; tracked models require low-latency execution loops rather than deep-research CoT.
+- `ollama:gemma:latest`
+  - Reason: General text model lacking robust function calling support for the current PydanticAI structured-output integration path.
 
 ## Other Vendors
 
