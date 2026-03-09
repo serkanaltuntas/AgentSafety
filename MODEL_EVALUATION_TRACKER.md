@@ -116,8 +116,8 @@ Runtime compatibility note:
 Benchmark-relevant coding models (`ollama:`):
 - [x] `ollama:qwen3-coder-next:latest` (coding-specialized family) (validated, 29/50 on 2026-03-09)
 - [x] `ollama:qwen3-coder:30b` (coding-specialized family) (validated, 35/50 on 2026-03-09)
-- [ ] `ollama:gpt-oss:120b` (coding-capable generalist)
-- [ ] `ollama:gpt-oss-safeguard:120b` (safety reasoning classifier)
+- [x] `ollama:gpt-oss:120b` (coding-capable generalist) (validated, 44/50 on 2026-03-09)
+- [x] `ollama:gpt-oss-safeguard:120b` (safety reasoning classifier) (validated, 42/50 on 2026-03-10)
 
 Excluded after compatibility audit (2026-03-09):
 - `ollama:deepseek-r1:70b`
