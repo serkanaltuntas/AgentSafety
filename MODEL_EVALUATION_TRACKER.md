@@ -117,6 +117,9 @@ Benchmark-relevant coding models (`ollama:`):
 - [ ] `ollama:qwen3-coder-next:latest` (coding-specialized family)
 - [ ] `ollama:qwen3-coder:30b` (coding-specialized family)
 - [ ] `ollama:gpt-oss:120b` (coding-capable generalist)
+- [ ] `ollama:deepseek-r1:70b` (coding-capable generalist)
+- [ ] `ollama:gemma:latest` (coding-capable generalist)
+- [ ] `ollama:gpt-oss-safeguard:120b` (safety reasoning classifier)
 
 ## Other Vendors
 
