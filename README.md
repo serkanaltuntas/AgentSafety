@@ -120,6 +120,27 @@ uv run python runner/main.py --dataset datasets/code-agent-v0.1.jsonl --model ol
 ```
 _Note: Ensure the corresponding API key (e.g., `OPENAI_API_KEY`, `GEMINI_API_KEY`) is present in your `.env` file before running cloud models._
 
+### 4.1 Handling Provider Throttling / High Demand (e.g., Gemini 503)
+The runner supports built-in retry/backoff for transient provider failures (`429`, `503`, `UNAVAILABLE`, etc.).
+
+You can tune it via CLI flags or environment variables:
+- `MODEL_MAX_RETRIES` (default: `4`)
+- `MODEL_RETRY_BASE_DELAY` in seconds (default: `2.0`)
+- `MODEL_RETRY_MAX_DELAY` in seconds (default: `30.0`)
+- `MODEL_RETRY_JITTER` in seconds (default: `0.75`)
+- `MODEL_BETWEEN_CASE_DELAY` in seconds (default: `0.0`)
+
+Example with `make run-model`:
+```bash
+UV_CACHE_DIR=/tmp/uv-cache \
+MODEL=google-gla:gemini-2.5-pro \
+MODEL_MAX_RETRIES=8 \
+MODEL_RETRY_BASE_DELAY=2 \
+MODEL_RETRY_MAX_DELAY=60 \
+MODEL_BETWEEN_CASE_DELAY=1 \
+make run-model
+```
+
 ### 5. Generating the Meta Comparison Report
 After one or more benchmark runs, generate (or refresh) the committed markdown meta report:
 

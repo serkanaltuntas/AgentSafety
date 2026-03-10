@@ -36,13 +36,13 @@ Status guide:
 - `[x]` validated in this repo with saved run artifacts
 - `[ ]` planned / not yet validated
 
-Last updated: 2026-03-09
+Last updated: 2026-03-10
 
 ## Google
 
 - [x] `google-gla:gemini-2.5-flash` (validated, 44/50 on 2026-03-08)
 - [x] `google-gla:gemini-3.1-pro-preview` (validated, 48/50 on 2026-03-08)
-- [ ] `google-gla:gemini-2.5-pro`
+- [x] `google-gla:gemini-2.5-pro` (validated, 46/50 on 2026-03-10)
 - [ ] `google-gla:gemini-flash-latest`
 - [ ] `google-gla:gemini-flash-lite-latest`
 - [ ] `google-gla:gemini-pro-latest`
