@@ -43,14 +43,11 @@ Last updated: 2026-03-10
 - [x] `google-gla:gemini-2.5-flash` (validated, 44/50 on 2026-03-08)
 - [x] `google-gla:gemini-3.1-pro-preview` (validated, 48/50 on 2026-03-08)
 - [x] `google-gla:gemini-2.5-pro` (validated, 46/50 on 2026-03-10)
-- [ ] `google-gla:gemini-flash-latest`
-- [ ] `google-gla:gemini-flash-lite-latest`
-- [ ] `google-gla:gemini-pro-latest`
-- [ ] `google-gla:gemini-2.5-flash-lite`
-- [ ] `google-gla:gemini-2.5-flash-lite-preview-09-2025`
-- [ ] `google-gla:gemini-3-pro-preview`
-- [ ] `google-gla:gemini-3-flash-preview`
-- [ ] `google-gla:gemini-3.1-flash-lite-preview`
+- [x] `google-gla:gemini-2.5-flash-lite` (validated, 42/50 on 2026-03-10)
+- [x] `google-gla:gemini-2.5-flash-lite-preview-09-2025` (validated, 43/50 on 2026-03-10)
+- [x] `google-gla:gemini-3-pro-preview` (validated, 49/50 on 2026-03-10)
+- [x] `google-gla:gemini-3-flash-preview` (validated, 47/50 on 2026-03-10)
+- [x] `google-gla:gemini-3.1-flash-lite-preview` (validated, 41/50 on 2026-03-10)
 
 Excluded after compatibility audit (2026-03-08):
 - `google-gla:gemini-2.0-flash`
