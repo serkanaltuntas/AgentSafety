@@ -76,12 +76,12 @@ Chat-compatible IDs (`openai:`):
 - [x] `openai:gpt-5-mini` (validated, 42/50 on 2026-03-09)
 - [x] `openai:gpt-5-nano` (validated, 35/50 on 2026-03-09)
 - [ ] `openai:gpt-4.1`
-- [ ] `openai:gpt-4.1-mini`
-- [ ] `openai:gpt-4.1-nano`
+- [x] `openai:gpt-4.1-mini` (validated, 41/50 on 2026-03-10)
+- [x] `openai:gpt-4.1-nano` (validated, 33/50 on 2026-03-10)
 - [ ] `openai:o3`
 - [ ] `openai:o4-mini`
 - [ ] `openai:o3-mini`
-- [ ] `openai:o1`
+- [x] `openai:o1` (coding-capable generalist) (validated, 42/50 on 2026-03-10)
 
 Responses-compatible IDs (`openai-responses:`):
 - [x] `openai-responses:gpt-5.4-pro` (validated, 46/50 on 2026-03-09)
